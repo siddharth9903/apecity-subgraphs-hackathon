@@ -1,0 +1,31 @@
+# yaml-language-server: $schema=./node_modules/envio/evm.schema.json
+name: apecity_uniswap_indexer
+unordered_multichain_mode: true
+field_selection:
+  transaction_fields:
+    # - "from"
+    # - "to"
+    - "hash"
+    - "transactionIndex"
+networks:
+- id: 8454
+  rpc_config:
+    url: https://virtual.base.rpc.tenderly.co/b24b9e70-286b-446d-9bd5-a728627d463c
+    initial_block_interval: 1
+  start_block: 23401447
+  contracts:
+  - name: ApeCurveFactoryContract
+    abi_file_path: abis/ApeCurveFactory.json
+    address:
+    - 0x9c6f1be1be7603029bb067bc554136e907620a5d
+    handler: src/ApeCurveFactoryHandlers.ts
+    events:
+    - event: TokenCreated(address indexed token, address indexed bondingCurve, uint256 reserveRatio)
+  - name: ApeBondingCurveContract
+    abi_file_path: abis/ApeBondingCurve.json
+    handler: src/ApeBondingCurveHandlers.ts
+    events:
+    - event: LogBuy(uint256 indexed amountBought, uint256 indexed totalCost, address indexed buyer)
+    - event: LogSell(uint256 indexed amountSell, uint256 indexed reward, address indexed seller)
+    - event: BondingCurveComplete(address indexed tokenAddress, address indexed liquidityPoolAddress)
+rollback_on_reorg: false

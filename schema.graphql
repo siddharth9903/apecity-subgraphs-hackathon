@@ -1,0 +1,161 @@
+enum BondingCurveType {
+    APE
+    UNISWAP
+}
+
+type Factory @entity {
+  # factory address
+  id: ID!
+
+  curveType: BondingCurveType!
+
+  chainId: Int!
+  address: String!
+  # token info
+  tokenCount: Int!
+  # pair info
+  bondingCurveCount: Int!
+  # transactions
+  txCount: BigInt!
+
+  bondingCurves: [BondingCurve!]! @derivedFrom(field: "factory")
+  tokens: [Token!]! @derivedFrom(field: "factory")
+}
+
+type Token @entity {
+  # token address
+  id: ID!
+  chainId: Int!
+
+  curveType: BondingCurveType!
+
+  address: String!
+  # mirrored from the smart contract
+  symbol: String!
+  name: String!
+  tokenURI: String!
+  decimals: BigInt!
+
+  metadata: TokenMetadata
+
+  timestamp: BigInt!
+
+  # used for other stats like marketcap
+  totalSupply: BigInt!
+  bondingCurve: BondingCurve!
+  factory: Factory!
+
+  creator: User!
+  creationTransaction: Transaction!
+}
+
+type TokenMetadata @entity{
+  id: ID!
+
+  name: String!
+  description: String!
+  symbol: String!
+  image: String!
+  twitter: String
+  telegram: String
+  website: String
+
+  contentHash: String!
+}
+
+type BondingCurve @entity {
+  # pair address
+  id: ID!
+  chainId: Int!
+
+  curveType: BondingCurveType!
+
+  address: String!
+  token: Token!
+
+  virtualEthReserve: BigDecimal
+  virtualTokenReserve: BigDecimal
+
+  ethReserve: BigDecimal!
+  tokenReserve: BigDecimal
+
+  reserveRatio: BigInt
+  circulatingSupply: BigDecimal
+
+  active: Boolean!
+  factory: Factory!
+  
+  currentPrice: BigDecimal!
+  marketCap: BigDecimal!
+
+  ethAmountToCompleteCurve: BigDecimal!
+  totalEthAmountToCompleteCurve: BigDecimal!
+
+  uniswapRouter: Bytes!
+  uniswapLiquidityPool: Bytes
+  lpCreationTimestamp: BigInt
+
+  txCount: BigInt!
+
+  # creation stats
+  timestamp: BigInt!
+  blockNumber: BigInt!
+
+  lastActivity: BigInt!
+
+  volume: BigDecimal!
+  buyVolume: BigDecimal!
+  sellVolume: BigDecimal!
+  trades: [Trade!]! @derivedFrom(field: "bondingCurve")
+
+  creator: User!
+  creationTransaction: Transaction!
+}
+
+type User @entity {
+  id: ID!
+
+  address: String!
+  trades: [Trade!]! @derivedFrom(field: "user")
+
+  createdTokens: [Token!]! @derivedFrom(field: "creator")
+  createdBondingCurves: [BondingCurve!]! @derivedFrom(field: "creator")
+}
+
+enum TradeType {
+  BUY
+  SELL
+}
+
+type Trade @entity {
+  # transaction hash + "-" + index in swaps Transaction array
+  id: ID!
+  chainId: Int!
+  transaction: Transaction!
+  timestamp: BigInt! # need this to pull recent txns for specific token or pair
+  bondingCurve: BondingCurve!
+
+  tradeType: TradeType!
+  inAmount: BigDecimal!
+  outAmount: BigDecimal!
+
+  openPrice: BigDecimal!
+  closePrice: BigDecimal!
+
+  avgPrice: BigDecimal!
+
+  user: User!
+}
+
+type Transaction @entity {
+  id: ID! # txn hash
+  hash: String!
+  chainId: Int!
+  blockNumber: BigInt!
+  timestamp: BigInt!
+
+  tokenCreationTx: Boolean!
+  trade: Trade
+}
+
+
