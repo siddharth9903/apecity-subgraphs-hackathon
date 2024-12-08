@@ -15,13 +15,13 @@ export const fallbacks: { id: number; rpcEndpoints: string[] }[] = [
   { //base
     id: 8453,
     rpcEndpoints: [
-      "https://base-rpc.publicnode.com",
+      "https://base.gateway.tenderly.co/7eSxf2jVQXhRN3QZ4bRkBj",
     ],
   },
   { //polygon
-    id: 137,
+    id: 1284,
     rpcEndpoints: [
-      "https://polygon.llamarpc.com",
+      "https://moonbeam.gateway.tenderly.co/46qa4Ie57g8F56TUSbdabt",
     ],
   },
 ];

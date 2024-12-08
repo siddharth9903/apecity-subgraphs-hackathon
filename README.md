@@ -14,3 +14,11 @@ pnpm envio codegen
 ```shell
 pnpm envio dev
 ```
+
+```shell
+TUI_OFF=true pnpm start
+```
+
+```shell
+TUI_OFF=true pnpm dev
+```

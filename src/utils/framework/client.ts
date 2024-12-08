@@ -1,12 +1,12 @@
 import { createPublicClient, http, fallback } from "viem";
 import { fallbacks } from "./rpc";
-import { base, polygon } from "viem/chains";
+import { base, moonbeam, polygon } from "viem/chains";
 import { tenderlyChain } from "./chains/tenderly";
 
 const supported = [
     tenderlyChain,
-    polygon,
     base,
+    moonbeam
 ]
 
 const clients = supported.map((chain) =>

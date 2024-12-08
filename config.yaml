@@ -7,17 +7,9 @@ field_selection:
     # - "to"
     - "hash"
     - "transactionIndex"
-networks:
-- id: 8454
-  rpc_config:
-    url: https://virtual.base.rpc.tenderly.co/b24b9e70-286b-446d-9bd5-a728627d463c
-    initial_block_interval: 1
-  start_block: 23401447
-  contracts:
+contracts:
   - name: ApeCurveFactoryContract
     abi_file_path: abis/ApeCurveFactory.json
-    address:
-    - 0x9c6f1be1be7603029bb067bc554136e907620a5d
     handler: src/ApeCurveFactoryHandlers.ts
     events:
     - event: TokenCreated(address indexed token, address indexed bondingCurve, uint256 reserveRatio)
@@ -28,4 +20,38 @@ networks:
     - event: LogBuy(uint256 indexed amountBought, uint256 indexed totalCost, address indexed buyer)
     - event: LogSell(uint256 indexed amountSell, uint256 indexed reward, address indexed seller)
     - event: BondingCurveComplete(address indexed tokenAddress, address indexed liquidityPoolAddress)
+networks:
+  - id: 8454
+    rpc_config:
+      url: https://virtual.base.rpc.tenderly.co/b24b9e70-286b-446d-9bd5-a728627d463c
+      initial_block_interval: 1
+    start_block: 23401447
+    contracts:
+      - name: ApeCurveFactoryContract
+        address: 0x9c6f1be1be7603029bb067bc554136e907620a5d
+        handler: src/ApeCurveFactoryHandlers.ts
+      - name: ApeBondingCurveContract
+        handler: src/ApeBondingCurveHandlers.ts
+  - id: 8453
+    rpc_config:
+      url: https://base.gateway.tenderly.co/7eSxf2jVQXhRN3QZ4bRkBj
+      initial_block_interval: 1
+    start_block: 23410276
+    contracts:
+      - name: ApeCurveFactoryContract
+        address: 0x9C6f1BE1Be7603029bB067BC554136e907620A5d
+        handler: src/ApeCurveFactoryHandlers.ts
+      - name: ApeBondingCurveContract
+        handler: src/ApeBondingCurveHandlers.ts
+  - id: 1284
+    rpc_config:
+      url: https://moonbeam.gateway.tenderly.co/46qa4Ie57g8F56TUSbdabt
+      initial_block_interval: 1
+    start_block: 8654562
+    contracts:
+      - name: ApeCurveFactoryContract
+        address: 0x9C6f1BE1Be7603029bB067BC554136e907620A5d
+        handler: src/ApeCurveFactoryHandlers.ts
+      - name: ApeBondingCurveContract
+        handler: src/ApeBondingCurveHandlers.ts
 rollback_on_reorg: false
